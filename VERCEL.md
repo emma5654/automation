@@ -1,8 +1,11 @@
 # Publicar na Vercel
 
-Preparação concluída no código, sem deploy executado. E-mail autorizado escolhido: `emarianelimafcm@gmail.com`. A conta de Auth e a senha ainda devem ser criadas diretamente no Supabase.
+**Atualização de 24/10/2026:** publicado em https://automation-studio-ai-carol-5fda.vercel.app. Código em https://github.com/emma5654/automation. Consulte [PUBLICACAO.md](PUBLICACAO.md) para os testes em produção, primeiro acesso e vínculo GitHub–Vercel ainda pendente.
 
-1. Colocar **o conteúdo desta pasta** em um repositório Git. Este diretório de entrega não possui `.git` nem remoto configurado; nenhum push foi feito ao GitHub.
+
+Publicação executada por API, com estado READY. As instruções abaixo também servem para reproduzir a configuração. E-mail autorizado escolhido: `emarianelimafcm@gmail.com`. A conta de Auth e a senha ainda devem ser criadas diretamente no Supabase.
+
+1. Colocar **o conteúdo desta pasta** em um repositório Git. O código já foi enviado ao repositório `emma5654/automation` pela API do GitHub; o diretório local de entrega continua sem `.git`.
 2. Na Vercel, escolher **Add New > Project > Import Git Repository**. Framework: **Next.js**. Root Directory: a pasta que contém `package.json`. Se copiar somente o aplicativo para a raiz do repositório, usar a raiz. Se mantiver a estrutura de entrega inteira, usar `outputs/automation-studio-web`.
 3. Usar `npm ci` como instalação e `npm run build` como build; `vercel.json` já declara ambos. Não publicar como export estático. Manter Fluid Compute habilitado; os handlers de IA/exportação declaram `maxDuration=300`. Conferir a disponibilidade desse limite na conta/plano escolhido.
 4. Em **Settings > Environment Variables**, preencher os campos descritos em DEPLOY.md. Usar `STUDIO_STORAGE=supabase`, `STUDIO_ALLOWED_EMAILS=emarianelimafcm@gmail.com`, a URL e a chave publishable do Supabase, uma chave mestra aleatória e `STUDIO_APP_URL` igual à origem HTTPS final da Vercel ou domínio próprio. Nenhum segredo deve receber prefixo `NEXT_PUBLIC_`.
@@ -22,6 +25,6 @@ Não usar o modo local na Vercel: filesystem efêmero e instâncias concorrentes
 - As páginas públicas em `/public/legal/*` continuam como rascunho até configurar dados reais revisados em `STUDIO_PUBLIC_LEGAL_JSON`. O usuário ainda não definiu os dados empresariais. O app não declara conformidade automática.
 - Preview Deployments precisam de seu próprio `STUDIO_APP_URL` exato e, de preferência, projeto Supabase de teste. O servidor não aceita automaticamente qualquer domínio de preview. Reimplantar após mudar variáveis.
 
-A conta Vercel, o repositório de publicação e o domínio definitivo ainda não foram vinculados por esta tarefa. Docker permanece como alternativa, não é usado na publicação Next.js padrão da Vercel.
+O projeto Vercel e seu domínio já foram publicados. O código está no GitHub; o gatilho automático GitHub–Vercel ainda exige conectar o GitHub nas Login Connections da conta Vercel. Docker permanece como alternativa, não é usado na publicação Next.js padrão da Vercel.
 
 Referências oficiais: [limites de payload](https://vercel.com/docs/functions/limitations), [duração das funções](https://vercel.com/docs/functions/configuring-functions/duration), [configuração do projeto](https://vercel.com/docs/project-configuration).

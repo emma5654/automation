@@ -1,6 +1,9 @@
 # Automation Studio AI — local e preparação para deploy
 
-**Deploy na Vercel:** consulte [VERCEL.md](VERCEL.md) e [DEPLOY.md](DEPLOY.md). O backend Supabase foi implementado e sua estrutura foi aplicada ao projeto indicado. A aplicação ainda não foi publicada; conta administradora, ambiente de hospedagem e validação de login real estão pendentes.
+**Atualização de 24/10/2026:** publicado em https://automation-studio-ai-carol-5fda.vercel.app. Código em https://github.com/emma5654/automation. Consulte [PUBLICACAO.md](PUBLICACAO.md) para os testes em produção, primeiro acesso e vínculo GitHub–Vercel ainda pendente.
+
+
+**Deploy na Vercel:** consulte [VERCEL.md](VERCEL.md) e [DEPLOY.md](DEPLOY.md). O backend Supabase foi implementado e sua estrutura foi aplicada ao projeto indicado. A publicação e as variáveis de produção foram concluídas. A criação da conta administradora e o teste de login real continuam pendentes.
 
 Aplicação Next.js/React/TypeScript para criar projetos comerciais, desenhar arquiteturas e ensinar a implementação com sequências visuais. Interface em português, responsiva, com modo local de usuário único explicitamente identificado.
 

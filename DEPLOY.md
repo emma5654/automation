@@ -1,6 +1,9 @@
 # Preparação para publicação
 
-Hospedagem escolhida: **Vercel**. Conta autorizada definida: **emarianelimafcm@gmail.com**. O aplicativo ainda não está publicado. O modo local permanece disponível para desenvolvimento. O backend cloud está implementado, e a estrutura foi aplicada ao projeto Supabase `sqtsnecaxcvwgqkljyca`.
+**Atualização de 24/10/2026:** publicado em https://automation-studio-ai-carol-5fda.vercel.app. Código em https://github.com/emma5654/automation. Consulte [PUBLICACAO.md](PUBLICACAO.md) para os testes em produção, primeiro acesso e vínculo GitHub–Vercel ainda pendente.
+
+
+Hospedagem escolhida: **Vercel**. Conta autorizada definida: **emarianelimafcm@gmail.com**. O aplicativo foi publicado; as instruções abaixo documentam sua configuração. O modo local permanece disponível para desenvolvimento. O backend cloud está implementado, e a estrutura foi aplicada ao projeto Supabase `sqtsnecaxcvwgqkljyca`.
 
 ## O que foi preparado
 

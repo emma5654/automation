@@ -1,6 +1,9 @@
 # Validação da preparação para Vercel
 
-Verificações feitas na preparação de 22–23/10/2026. Nenhum deploy público foi realizado.
+**Atualização de 24/10/2026:** publicado em https://automation-studio-ai-carol-5fda.vercel.app. Código em https://github.com/emma5654/automation. Consulte [PUBLICACAO.md](PUBLICACAO.md) para os testes em produção, primeiro acesso e vínculo GitHub–Vercel ainda pendente.
+
+
+Verificações feitas na preparação de 22–23/10/2026. O deploy público foi realizado posteriormente em 24/10/2026 e está documentado em PUBLICACAO.md.
 
 ## Resultados confirmados
 
@@ -27,7 +30,7 @@ A execução final do teste de navegação passou em 15 verificações: dashboar
 - A conta `emarianelimafcm@gmail.com` ainda não existia no Supabase na última consulta. O e-mail foi colocado na configuração de exemplo de acesso autorizado. Senha deve ser criada diretamente no painel.
 - Login real, renovação de sessão, uso de imagens/ZIP assinados com conta real e chamadas pagas à OpenAI precisam do teste final após configurar a conta. As políticas de isolamento foram verificadas diretamente no banco, mas isso não substitui esse teste de ponta a ponta.
 - Nenhuma chave real foi usada nos testes automatizados. O aplicativo não comprova validade de API key ao salvar.
-- A conta/projeto da Vercel, domínio e variáveis de ambiente ainda não foram vinculados. Nenhum build na infraestrutura da Vercel foi executado.
+- Projeto, domínio, variáveis e build de produção na Vercel foram configurados posteriormente. A verificação de produção está em PUBLICACAO.md.
 - Dockerfile foi preparado, mas a imagem Docker não foi construída ou executada neste ambiente.
 - Dados locais não foram migrados. Identificação empresarial, canais públicos, revisão jurídica, retenção/expurgo, backups e consentimento durável continuam pendentes conforme DEPLOY.md.
 
