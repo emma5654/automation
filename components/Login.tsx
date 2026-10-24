@@ -1,0 +1,8 @@
+'use client';
+import { useState } from 'react';
+import Link from 'next/link';
+import { Button,Field } from './ui';
+export default function Login({onLogin}:{onLogin:()=>Promise<void>}){
+ const [email,setEmail]=useState('');const [password,setPassword]=useState('');const [busy,setBusy]=useState(false);const [error,setError]=useState('');
+ return <main className="panel" style={{maxWidth:480,margin:'10vh auto',padding:32}}><h1>Entrar no Automation Studio</h1><p>Use sua conta autorizada para acessar seus projetos.</p><form onSubmit={async e=>{e.preventDefault();setBusy(true);setError('');try{const response=await fetch('/api/auth',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password})});const data=await response.json();if(!response.ok)throw new Error(data.error);setPassword('');await onLogin();}catch(e){setError(e instanceof Error?e.message:'Falha ao entrar.');}finally{setBusy(false);}}}><Field label="E-mail"><input required type="email" autoComplete="username" value={email} onChange={e=>setEmail(e.target.value)}/></Field><Field label="Senha"><input required type="password" autoComplete="current-password" value={password} onChange={e=>setPassword(e.target.value)}/></Field>{error&&<p role="alert">{error}</p>}<Button type="submit" busy={busy}>Entrar</Button></form><p className="muted">Cadastro fechado. Para acesso ou recuperação da conta, fale com o administrador do estúdio.</p><p><Link href="/public/legal/privacy">Privacidade</Link> · <Link href="/public/legal/terms">Termos</Link> · <Link href="/public/legal/rights">Seus direitos</Link></p></main>;
+}

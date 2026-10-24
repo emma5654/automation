@@ -1,0 +1,8 @@
+'use client';
+import { useState } from 'react';
+import { Project,suggestEffort } from '../lib/model';
+import { Button,Field } from './ui';
+export default function Effort({project,apply}:{project:Project;apply:(hours:number)=>void}){
+ const [complexity,setComplexity]=useState<'Baixa'|'Média'|'Alta'>('Baixa');const estimate=suggestEffort(project,complexity);
+ return <div className="panel"><div className="section-heading"><div><h3>Estimativa inicial de esforço</h3><p>Regra editável de planejamento; revise as horas antes de apresentar ao cliente.</p></div><Button kind="secondary" onClick={()=>apply(estimate.hours)}>Usar {estimate.hours} horas</Button></div><div className="form-grid"><Field label="Complexidade"><select value={complexity} onChange={e=>setComplexity(e.target.value as typeof complexity)}>{['Baixa','Média','Alta'].map(c=><option key={c}>{c}</option>)}</select></Field><div><p className="muted">{project.automation.nodes.length} nós · {project.automation.connections.length} conexões · {estimate.integrations} blocos de integração planejados</p><p className="muted">Construção {estimate.build} h + documentação visual {estimate.visual} h + testes {estimate.tests} h + suporte {estimate.support} h = {estimate.hours} h.</p></div></div><details><summary>Ver regra de cálculo</summary><p>Construção = (nós × 0,4 + conexões × 0,15 + integrações × 1,5) × fator de complexidade (1 / 1,5 / 2,2). Visual = etapas × 0,12 (mínimo 1 h). Testes = cenários × 0,2 + conexões × 0,1 (mínimo 1 h). Suporte = 1 h. Arredondamento por componente para meia hora acima. Não é um benchmark de mercado.</p></details></div>;
+}

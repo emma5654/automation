@@ -1,0 +1,11 @@
+node_modules
+.next
+.studio-build
+.git
+.env*
+data
+tests
+*.tsbuildinfo
+*.zip
+AGENTS.md
+README.md

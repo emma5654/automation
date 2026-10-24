@@ -1,0 +1,9 @@
+node_modules
+.next
+.studio-build
+.git
+.env*
+data
+tests
+*.tsbuildinfo
+*.zip
