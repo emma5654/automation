@@ -11,3 +11,5 @@ export type CredentialInput=z.infer<typeof credentialInput>;
 export type CredentialSummary={id:string;label:string;service:string;active:boolean;createdAt:string;model:string;textModel:string};
 export type CredentialPage={items:CredentialSummary[];hasMore:boolean;page:number;mode:'supabase'|'local'};
 
+
+export function normalizeTextModel(service:string,value?:string){return service==='gemini'?(value?.startsWith('gemini-')?value:'gemini-3.5-flash-lite'):(value||'gpt-4.1-mini');}
