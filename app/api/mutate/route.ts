@@ -1,3 +1,4 @@
+import { pricingTableSchema,suggestedPrice } from '../../../lib/pricing-table';
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { legalSchema,privacyRequestSchema } from '../../../lib/compliance';
@@ -5,6 +6,7 @@ import { guard,failure } from '../../../lib/http';
 import { transaction,log } from '../../../lib/store';
 import { projectSchema,automationSchema,clientInputSchema,messageSchema,skillSchema,newProject,deriveSequence,changeArchitecture,metadata,stamp,id } from '../../../lib/model';
 const command=z.discriminatedUnion('type',[
+ z.object({type:z.literal('savePricingTable'),table:pricingTableSchema}),
  z.object({type:z.literal('privacyRequestDelete'),id:z.string().uuid()}),
  z.object({type:z.literal('saveLegal'),legal:legalSchema}),
  z.object({type:z.literal('privacyRequest'),record:privacyRequestSchema}),
@@ -24,13 +26,15 @@ export async function POST(req:Request){try{
   if(c.type==='saveLegal'){if(JSON.stringify(c.legal)!==JSON.stringify(db.legal)&&c.legal.policyVersion===db.legal.policyVersion)c.legal.policyVersion='v'+Date.now();db.legal=c.legal;log(db,'Informações legais atualizadas');}
   if(c.type==='privacyRequest'){db.privacyRequests.push({...c.record,...metadata(),status:'Recebida localmente'});log(db,'Solicitação de titular registrada localmente');}
   if(c.type==='privacyRequestUpdate'){const item=db.privacyRequests.find(v=>v.id===c.id);if(!item)throw new Error('NOT_FOUND');item.status=c.status;item.response=c.response;item.updatedAt=stamp();log(db,'Solicitação de titular atualizada');}
-  if(c.type==='create'){const p=deriveSequence(newProject(c.name));db.projects.push(p);log(db,`Projeto criado: ${p.name}`,p.id);}
+  if(c.type==='savePricingTable'){db.pricingTable=c.table;log(db,'Tabela de preços atualizada');}
+  if(c.type==='create'){const p=deriveSequence(newProject(c.name));const t=db.pricingTable,s=t.services[0];p.pricing={...p.pricing,hours:s.hours,hourly:t.hourly,expenses:t.expenses,risk:t.risk,tax:t.tax,margin:t.margin,monthly:s.monthly,supportHours:s.supportHours,price:suggestedPrice(t,s.hours)||0};db.projects.push(p);log(db,`Projeto criado: ${p.name}`,p.id);}
   if(c.type==='saveProject'){
    const index=db.projects.findIndex(p=>p.id===c.project.id);if(index<0)throw new Error('NOT_FOUND');const previous=db.projects[index];
    // Architecture and historical evidence have dedicated server-controlled operations.
    const next={...c.project,automation:previous.automation,versions:previous.versions,history:previous.history};
    next.images=previous.images.map(image=>{const supplied=c.project.images.find(i=>i.id===image.id);return supplied?{...image,alt:supplied.alt,author:supplied.author,source:supplied.source,rightsNote:supplied.rightsNote,rightsConfirmed:supplied.rightsConfirmed,title:supplied.title,instruction:supplied.instruction,prompt:supplied.prompt,technicalReviewed:supplied.technicalReviewed,status:image.status==='desatualizado'?'desatualizado':(['revisado','testado'].includes(supplied.status)&&image.file?supplied.status:image.status)}:image;});
    next.tests=next.tests.map(test=>{const old=previous.tests.find(t=>t.id===test.id);const runs=old?.runs||[];const changed=old&&(old.status!==test.status||old.observed!==test.observed);return {...test,runs:changed?[...runs,{...metadata(),status:test.status,observed:test.observed,responsible:test.responsible,version:previous.automation.version}]:runs};});
+   next.diagnosis={...next.diagnosis,planning:previous.diagnosis.planning};
    next.security={...next.security,id:previous.security.id,createdAt:previous.security.createdAt,updatedAt:stamp(),reviews:previous.security.reviews};next.updatedAt=stamp();db.projects[index]=projectSchema.parse(next);log(db,`Projeto atualizado: ${next.name}`,next.id);
   }
   if(c.type==='architecture'){const index=db.projects.findIndex(p=>p.id===c.projectId);if(index<0)throw new Error('NOT_FOUND');db.projects[index]=changeArchitecture(db.projects[index],c.automation);log(db,'Arquitetura salva e sequência sincronizada',c.projectId);}
