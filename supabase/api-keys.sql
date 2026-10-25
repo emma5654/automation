@@ -34,3 +34,4 @@ grant execute on function public.studio_activate_api_key(uuid) to authenticated;
 insert into public.studio_api_keys(user_id,label,service,encrypted,active)
 select user_id,'OpenAI existente','openai',encrypted,true from public.studio_secrets;
 
+delete from public.studio_secrets s where exists(select 1 from public.studio_api_keys k where k.user_id=s.user_id and k.encrypted=s.encrypted);

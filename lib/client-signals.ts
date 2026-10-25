@@ -4,8 +4,9 @@ export type Signal={tone:Tone;label:string;detail:string};
 export type ClientSignal={clientId:string;project:Signal;health:Signal};
 function projectSignal(p:Project,today:string):Signal{
  if(p.tests.some(t=>t.status==='Reprovado'))return {tone:'red',label:'Atenção necessária',detail:'Há teste reprovado registrado.'};
- if(p.security.reviews.some(r=>r.version===p.automation.version&&r.report.findings.some(f=>f.severity==='Crítica'||f.severity==='Alta')))return {tone:'red',label:'Risco em revisão',detail:'A revisão desta versão aponta risco alto ou crítico; exige análise humana.'};
- if(p.maintenance.some(m=>m.nextReview&&m.nextReview<today))return {tone:'yellow',label:'Revisão pendente',detail:'Há revisão de manutenção vencida.'};
+ if(['cybersecurity','pentest'].some(role=>p.security.reviews.find(r=>r.role===role&&r.version===p.automation.version)?.report.findings.some(f=>f.severity==='Crítica'||f.severity==='Alta')))return {tone:'red',label:'Risco em revisão',detail:'A revisão desta versão aponta risco alto ou crítico; exige análise humana.'};
+ const latestMaintenance=[...p.maintenance].sort((a,b)=>b.date.localeCompare(a.date)||b.createdAt.localeCompare(a.createdAt))[0];
+ if(latestMaintenance?.nextReview&&latestMaintenance.nextReview<today)return {tone:'yellow',label:'Revisão pendente',detail:'Há revisão de manutenção vencida.'};
  if(['Pronto para entrega','Implantado'].includes(p.status)&&p.automation.nodes.length>0&&p.tests.length>0&&p.tests.every(t=>t.status==='Aprovado'))return {tone:'green',label:'Projeto validado',detail:'Estado declarado e testes registrados estão completos. Isso não comprova disponibilidade externa.'};
  return {tone:'yellow',label:'Em preparação',detail:'Há etapas ou validações pendentes no projeto.'};
 }
